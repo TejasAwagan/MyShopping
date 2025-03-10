@@ -40,7 +40,7 @@ public class ImageService implements IImageService{
     }
 
     @Override
-    public List<ImageDto> saveImages( Long productId,   List<MultipartFile> files) {
+    public List<ImageDto> saveImages(Long productId, List<MultipartFile> files) {
         Product product = productService.getProductById(productId);
 
         List<ImageDto> savedImageDto = new ArrayList<>();
