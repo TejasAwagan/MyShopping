@@ -1,5 +1,6 @@
 package com.devtejas.myshopping.service.product;
 
+import com.devtejas.myshopping.dto.ProductDto;
 import com.devtejas.myshopping.models.Product;
 import com.devtejas.myshopping.request.AddProductRequest;
 import com.devtejas.myshopping.request.ProductUpdateRequest;
@@ -18,16 +19,21 @@ public interface IProductService {
 
     List<Product> getAllProducts();
 
-    List<Product> getProductByCategory(String category);
+    List<Product> getProductsByCategory(String category);
 
-    List<Product> getProductByBrand(String brand);
+    List<Product> getProductsByBrand(String brand);
 
     List<Product> getProductByCategoryAndBrand(String category, String brand);
 
     List<Product> getProductByName(String name);
 
-    List<Product> getProductyBrandAndName(String brand, String name);
+    List<Product> getProductsByBrandAndName(String brand, String name);
 
-    Long coutProductByBrandAndName(String brand, String name);
+    Long countProductsByBrandAndName(String brand, String name);
+
+    List<ProductDto> getConvertedProducts(List<Product> products);
+
+    ProductDto convertToDto(Product product);
+
 
 }

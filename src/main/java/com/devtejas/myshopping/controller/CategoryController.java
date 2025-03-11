@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @Controller
 @RequestMapping("${api.prefix}/category")
@@ -70,7 +69,7 @@ public class CategoryController {
             return ResponseEntity.ok(new ApiResponse("Category Added Successfuly !", category));
         }
         catch(AlreadyExistsException e){
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(),null));
         }
     }
 
@@ -78,11 +77,9 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> updateCategory(@RequestBody Category category, @PathVariable Long id){
         try{
             Category updatedCategory = categoryService.getCategoryById(id);
+            categoryService.updateCategory(category, id);
+            return ResponseEntity.ok(new ApiResponse("Update success!", updatedCategory));
 
-            if(updatedCategory != null){
-                categoryService.updateCategory(category, id);
-                return ResponseEntity.ok(new ApiResponse("Update success!", updatedCategory));
-            }
         } catch(ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }

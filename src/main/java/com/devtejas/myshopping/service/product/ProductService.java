@@ -1,15 +1,21 @@
 package com.devtejas.myshopping.service.product;
 
+import com.devtejas.myshopping.dto.ImageDto;
+import com.devtejas.myshopping.dto.ProductDto;
 import com.devtejas.myshopping.exception.ProductnotFoundException;
 import com.devtejas.myshopping.exception.ResourceNotFoundException;
 import com.devtejas.myshopping.models.Category;
+import com.devtejas.myshopping.models.Image;
 import com.devtejas.myshopping.models.Product;
 import com.devtejas.myshopping.repository.CategoryRepository;
+import com.devtejas.myshopping.repository.ImageRepository;
 import com.devtejas.myshopping.repository.ProductRepository;
 import com.devtejas.myshopping.request.AddProductRequest;
 import com.devtejas.myshopping.request.ProductUpdateRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 
 import java.util.List;
@@ -23,6 +29,9 @@ public class ProductService implements IProductService{
 
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    ImageRepository imageRepository;
 
     @Override
     public Product addProduct(AddProductRequest request) {
@@ -90,12 +99,12 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public List<Product> getProductByCategory(String category) {
+    public List<Product> getProductsByCategory(String category) {
         return productRepository.findByCategoryName(category);
     }
 
     @Override
-    public List<Product> getProductByBrand(String brand) {
+    public List<Product> getProductsByBrand(String brand) {
         return productRepository.findByBrand(brand);
     }
 
@@ -110,12 +119,29 @@ public class ProductService implements IProductService{
     }
 
     @Override
-    public List<Product> getProductyBrandAndName(String brand, String name) {
+    public List<Product> getProductsByBrandAndName(String brand, String name) {
         return productRepository.findByBrandAndName(brand,name);
     }
 
     @Override
-    public Long coutProductByBrandAndName(String brand, String name) {
+    public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
+    }
+
+    @Override
+    public List<ProductDto> getConvertedProducts(List<Product> products) {
+        return products.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public ProductDto convertToDto(Product product) {
+        ModelMapper modelMapper = new ModelMapper();
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
 }

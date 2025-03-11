@@ -12,8 +12,6 @@ public interface ICategoryService {
 
     Category getCategoryByName(String name);
 
-    List<Category> getAllCategory();
-
     Category addCategory(Category category);
 
     Category updateCategory(Category category, Long id);
