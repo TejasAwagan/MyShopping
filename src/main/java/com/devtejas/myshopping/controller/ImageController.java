@@ -22,7 +22,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-@Controller
+@RestController
 @RequestMapping("${api.prefix}/images")
 public class ImageController {
 
@@ -39,6 +39,8 @@ public class ImageController {
         }
 
     }
+
+
     @GetMapping("/image/download/{imageId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long imageId) throws SQLException {
         Image image = imageService.getImageById(imageId);

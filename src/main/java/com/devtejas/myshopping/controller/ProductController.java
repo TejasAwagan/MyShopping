@@ -7,20 +7,16 @@ import com.devtejas.myshopping.request.AddProductRequest;
 import com.devtejas.myshopping.request.ProductUpdateRequest;
 import com.devtejas.myshopping.response.ApiResponse;
 import com.devtejas.myshopping.service.product.IProductService;
-import com.devtejas.myshopping.service.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.system.ApplicationPid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.PostExchange;
 
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
-@Controller
+@RestController
 @RequestMapping("${api.prefix}/products")
 public class ProductController {
 
@@ -52,7 +48,7 @@ public class ProductController {
         try{
             Product newProduct = productService.addProduct(product);
             ProductDto productDto = productService.convertToDto(newProduct);
-            return ResponseEntity.ok(new ApiResponse("Product Added Successfuly !", productDto));
+            return ResponseEntity.ok(new ApiResponse("Product Added Successfully !", productDto));
         }
         catch(Exception e)
         {
