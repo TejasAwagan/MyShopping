@@ -40,6 +40,7 @@ public class CartItemService implements ICartItemService{
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst().orElse(new CartItem());
+
         if (cartItem.getId() == null) {
             cartItem.setCart(cart);
             cartItem.setProduct(product);
