@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RestController
@@ -23,10 +24,16 @@ public class CartController {
     public ResponseEntity<ApiResponse> getCart(@PathVariable Long cartId){
         try {
             Cart cart = cartService.getCart(cartId);
+            if(cart == null){
+                throw new ResourceNotFoundException("Cart Not found");
+            }
             return ResponseEntity.ok(new ApiResponse("Success", cart));
         }
         catch(ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
         }
     }
 
@@ -42,7 +49,7 @@ public class CartController {
     }
 
     @GetMapping("/{cartId}/cart/total-price")
-    public ResponseEntity<ApiResponse> getTotalAmount(Long cartId){
+    public ResponseEntity<ApiResponse> getTotalAmount(@PathVariable Long cartId){
         try{
             BigDecimal totalPrice = cartService.getTotalPrice(cartId);
             return ResponseEntity.ok(new ApiResponse("Total Price", totalPrice));

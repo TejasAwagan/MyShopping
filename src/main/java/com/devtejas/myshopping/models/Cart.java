@@ -23,9 +23,9 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItem> items = new HashSet<>();
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
 
@@ -57,7 +57,7 @@ public class Cart {
     public Cart(BigDecimal totalAmount, Set<CartItem> items, User user) {
         this.totalAmount = totalAmount;
         this.items = items;
-//        this.user = user;
+        this.user = user;
     }
 
     public Long getId() {
@@ -84,11 +84,11 @@ public class Cart {
         this.items = items;
     }
 
-//    public User getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(User user) {
-//        this.user = user;
-//    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
